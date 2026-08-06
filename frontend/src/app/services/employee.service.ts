@@ -2,13 +2,15 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EmployeePageResponse, PayAnalytics, Employee } from '../models/employee.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/employees';
+  // Uses environment configuration (swaps between local & Render automatically)
+  private apiUrl = environment.apiUrl;
 
   getEmployees(
     page: number = 0,
