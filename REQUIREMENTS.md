@@ -1,18 +1,17 @@
-# Product Requirements Document (PRD)
-## ACME Organization - Salary Management System
+# Product Framing & Requirements Document
 
-**Author:** HR Engineering Team  
-**Persona:** HR Manager  
+**Product Name:** ACME Global Salary Management System  
+**Target User:** HR Manager, ACME Org  
 **Scale Target:** 10,000 Active Global Employees  
 
 ---
 
-### 1. Goal
+## 1. Goal
 Transition ACME Org’s HR team from error-prone, fragmented spreadsheets to a centralized, high-performance web application. The platform enables HR managers to manage multi-country employee compensation seamlessly and extract instant insights regarding organizational pay structure.
 
 ---
 
-### 2. Scope & Core Features
+## 2. Scope & Core Features
 
 * **High-Performance Employee Table (10k Records):**
   * Paginated table with server-side sorting and multi-column filtering (Name, Department, Country, Designation).
@@ -27,7 +26,7 @@ Transition ACME Org’s HR team from error-prone, fragmented spreadsheets to a c
 
 ---
 
-### 3. Out of Scope & Deliberate Trade-Offs
+## 3. Out of Scope & Deliberate Trade-Offs
 
 | Feature | Status | Engineering & Product Reasoning |
 | :--- | :--- | :--- |
@@ -37,8 +36,8 @@ Transition ACME Org’s HR team from error-prone, fragmented spreadsheets to a c
 
 ---
 
-### 4. Technical Stack Architecture
+## 4. Technical Stack Architecture
 
 * **Backend:** Java 21, Spring Boot 3.3+, Spring Data JPA, SQLite, Lombok, DataFaker.
-* **Frontend:** Angular 18+ (Standalone Components), Angular Material, RxJS.
-* **Testing:** JUnit 5, Mockito.
+* **Frontend:** Angular 18+, Angular Material, RxJS.
+* **Testing:** JUnit 5, Mockito, Jasmine/Karma.
