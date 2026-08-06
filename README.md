@@ -1,15 +1,34 @@
 # Global Salary Management System
 
-Full-stack application featuring an Angular frontend and a Spring Boot (SQLite + JPA) backend supporting paginated search, sorting, and analytics over 10,000 employee records.
+Full-stack enterprise application featuring an Angular 19 frontend and a Spring Boot 3 (SQLite + JPA) backend supporting low-latency paginated search, multi-column sorting, and real-time compensation analytics over 10,000+ employee records.
+
+---
 
 ## Project Structure
-- `/backend`: Spring Boot REST API (Java 17+, JPA, SQLite)
-- `/frontend`: Angular 19 Standalone Application (Angular Material)
+- `/backend`: Spring Boot REST API (Java 21/17, Spring Data JPA, SQLite, DataFaker)
+- `/frontend`: Angular 19 Standalone Application (Angular Material, Vitest)
+- `/REQUIREMENTS.md`: Product Requirements Document (PRD) detailing scope, personas, and trade-offs
+- `/ARCHITECTURE.md`: Architecture diagrams and technical design highlights
 
-## Quick Start (Local)
+---
+
+## Quick Start (Local Development)
+
+### Prerequisites
+- **Java**: JDK 21
+- **Node.js**: v18+ (npm v9+)
+- **Maven**: Installed globally (`mvn`) or using `./mvnw`
+
+---
 
 ### 1. Backend Setup
+
 ```bash
+# Navigate to backend directory
 cd backend
-./mvnw spring-boot:run
-ls
+
+# Run backend unit tests
+mvn test
+
+# Start Spring Boot API (runs on http://localhost:8080)
+mvn spring-boot:run
