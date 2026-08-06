@@ -126,6 +126,17 @@ import { AnalyticsComponent } from '../analytics/analytics.component';
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <!-- Empty State Row -->
+          <tr class="mat-row no-data-row" *matNoDataRow>
+            <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+              <div class="empty-state" *ngIf="!isLoading">
+                <mat-icon class="empty-icon">search_off</mat-icon>
+                <p class="empty-title">No Items Found</p>
+                <span class="empty-subtext">No matching records found for the applied filters.</span>
+              </div>
+            </td>
+          </tr>
         </table>
 
         <mat-paginator
@@ -155,6 +166,13 @@ import { AnalyticsComponent } from '../analytics/analytics.component';
     .text-subtle { color: #718096; }
     .dept-chip { background: #ebf8ff; color: #2b6cb0; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: 600; }
     .spinner-overlay { position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.7); display:flex; justify-content:center; align-items:center; z-index:10; }
+    
+    /* Empty State Styling */
+    .no-data-cell { padding: 48px 16px !important; text-align: center; }
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .empty-icon { font-size: 48px; width: 48px; height: 48px; color: #a0aec0; margin-bottom: 12px; }
+    .empty-title { font-size: 1.1rem; font-weight: 600; color: #4a5568; margin: 0 0 4px 0; }
+    .empty-subtext { font-size: 0.9rem; color: #718096; }
   `]
 })
 export class EmployeeTableComponent implements OnInit {
