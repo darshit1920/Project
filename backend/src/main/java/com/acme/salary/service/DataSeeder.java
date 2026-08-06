@@ -30,11 +30,14 @@ public class DataSeeder implements CommandLineRunner {
             String dept = depts.get(faker.random().nextInt(depts.size()));
             String country = countries.get(faker.random().nextInt(countries.size()));
             double salary = Math.round(faker.number().randomDouble(2, 45000, 220000));
+            String firstName = faker.name().firstName();
+            String lastName = faker.name().lastName();
+            String email = firstName.toLowerCase() + "." + lastName.toLowerCase() + i + "@acme.com";
 
             batch.add(Employee.builder()
-                    .firstName(faker.name().firstName())
-                    .lastName(faker.name().lastName())
-                    .email(faker.internet().emailAddress())
+                    .firstName(firstName)
+                    .lastName(lastName)
+                    .email(email)
                     .department(dept)
                     .country(country)
                     .designation(faker.job().title())

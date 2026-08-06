@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { forkJoin } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { EmployeeService } from '../../services/employee.service';
 import { Employee, PayAnalytics } from '../../models/employee.model';
@@ -127,8 +129,10 @@ import { AnalyticsComponent } from '../analytics/analytics.component';
         </table>
 
         <mat-paginator
+          #paginator
           [length]="totalElements"
           [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
           [pageSizeOptions]="[10, 25, 50, 100]"
           (page)="onPageChange($event)"
           showFirstLastButtons>
@@ -156,6 +160,9 @@ import { AnalyticsComponent } from '../analytics/analytics.component';
 export class EmployeeTableComponent implements OnInit {
   private employeeService = inject(EmployeeService);
   private snackBar = inject(MatSnackBar);
+  private cdr = inject(ChangeDetectorRef);
+
+  @ViewChild('paginator') paginator!: MatPaginator;
 
   displayedColumns: string[] = ['id', 'name', 'email', 'department', 'country', 'designation', 'salary'];
   employees: Employee[] = [];
@@ -176,8 +183,40 @@ export class EmployeeTableComponent implements OnInit {
   countries = ['USA', 'UK', 'Germany', 'India', 'Canada', 'Australia', 'Japan', 'Singapore'];
 
   ngOnInit(): void {
-    this.loadData();
-    this.loadAnalytics();
+    this.initialLoad();
+  }
+
+  initialLoad(): void {
+    this.isLoading = true;
+    forkJoin({
+      employees: this.employeeService.getEmployees(
+        this.pageIndex,
+        this.pageSize,
+        this.sortBy,
+        this.sortDir,
+        this.searchQuery,
+        this.selectedDepartment,
+        this.selectedCountry
+      ),
+      analytics: this.employeeService.getAnalytics()
+    })
+    .pipe(
+      finalize(() => {
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      })
+    )
+    .subscribe({
+      next: (res) => {
+        this.employees = res.employees.content;
+        this.totalElements = res.employees.totalElements;
+        this.analyticsData = res.analytics;
+      },
+      error: (err) => {
+        console.error('Initial load failed:', err);
+        this.snackBar.open('Failed to load initial backend records.', 'Close', { duration: 4000 });
+      }
+    });
   }
 
   loadData(): void {
@@ -190,23 +229,22 @@ export class EmployeeTableComponent implements OnInit {
       this.searchQuery,
       this.selectedDepartment,
       this.selectedCountry
-    ).subscribe({
+    )
+    .pipe(
+      finalize(() => {
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      })
+    )
+    .subscribe({
       next: (res) => {
         this.employees = res.content;
         this.totalElements = res.totalElements;
-        this.isLoading = false;
       },
-      error: () => {
-        this.isLoading = false;
+      error: (err) => {
+        console.error('Table fetch failed:', err);
         this.snackBar.open('Failed to load employee records from backend.', 'Close', { duration: 4000 });
       }
-    });
-  }
-
-  loadAnalytics(): void {
-    this.employeeService.getAnalytics().subscribe({
-      next: (data) => this.analyticsData = data,
-      error: (err) => console.error('Error fetching analytics:', err)
     });
   }
 
@@ -224,6 +262,9 @@ export class EmployeeTableComponent implements OnInit {
 
   applyFilters(): void {
     this.pageIndex = 0;
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
     this.loadData();
   }
 }
