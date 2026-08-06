@@ -1,0 +1,16 @@
+# Backend
+**/target/
+**/*.db
+**/*.db-journal
+
+# Frontend
+**/node_modules/
+**/dist/
+**/.angular/
+
+# Environment & System
+.DS_Store
+.idea/
+*.iml
+.vscode/
+*.log
