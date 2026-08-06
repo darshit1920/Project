@@ -1,0 +1,10 @@
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+backend/target/
+backend/salary_db.db
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
