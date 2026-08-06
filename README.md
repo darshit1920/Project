@@ -1,3 +1,4 @@
+[![Vercel Deployment](https://img.shields.io/badge/Status-Live%20Demo-brightgreen)](https://salary-management-nml945gx3-darshit3.vercel.app/)
 # Global Salary Management System
 
 Full-stack enterprise application featuring an Angular 19 frontend and a Spring Boot 3 (SQLite + JPA) backend supporting low-latency paginated search, multi-column sorting, and real-time compensation analytics over 10,000+ employee records.
